@@ -7,4 +7,5 @@ OOP rühmatöö raames valminud eestikeelne trükkimiskiiruse testi programm. Se
 ### Kes tegid?
 
 Richard-Sven Rivik
+
 Sadu Maria Jaarman
