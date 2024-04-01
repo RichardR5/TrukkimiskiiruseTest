@@ -5,30 +5,30 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Lausegeneraator {
+public class SonadeGeneraator {
     /**
-     * Genereerib vastava pikkusega lause valides suvalisi sõnu
-     * @param sõnadeArv Määrab mitme sõnaga lause genereeritakse
-     * @return Tagastab listi milles on lause sõnad
+     * Genereerib vastava pikkusega testi valides suvalisi sõnu
+     * @param sõnadeArv Määrab mitme sõnaga testi genereeritakse
+     * @return Tagastab listi milles on testi sõnad
      */
-    public static List<String> genereeriLause(int sõnadeArv) {
-        // loob listi 29052 sõnast, kust lause sõnu hakatakse valima
+    public static List<String> genereeriSõnad(int sõnadeArv) {
+        // loob listi 29052 sõnast, kust testi sõnu hakatakse valima
         List<String> sõnad = sõnadFailist();
 
-        // loob listi lauseSõnad, kus hoiatakse lause sõnu
-        List<String> lauseSõnad = new ArrayList<>();
+        // loob listi testiSõnad, kus hoiatakse testi sõnu
+        List<String> testiSõnad = new ArrayList<>();
 
         // tsükkel, mis iga iteratsiooniga genereerib suvalise arvu
         // seda suvalist arvu kasutatakse suvalise sõna valimiseks
-        // suvaline sõna lisatakse lauseSõnade listi
+        // suvaline sõna lisatakse testiSõnade listi
         for (int i = 0; i < sõnadeArv; i++) {
             Random random = new Random();
             int suvalineNr = random.nextInt(sõnad.size());
 
-            lauseSõnad.add(sõnad.get(suvalineNr));
+            testiSõnad.add(sõnad.get(suvalineNr));
         }
 
-        return lauseSõnad;
+        return testiSõnad;
     }
 
     /**
@@ -61,9 +61,9 @@ public class Lausegeneraator {
         }
         return sõnad;
     }
-    // main meetod, mida kasutasime testimiseks
+    /*//main meetod, mida kasutasime testimiseks
     public static void main(String[] args) {
-        int sõnuLauses = 20;
-        System.out.println(genereeriLause(sõnuLauses));
-    }
+        int sõnuTestis = 3;
+        System.out.println(genereeriSõnad(sõnuTestis));
+    }*/
 }
