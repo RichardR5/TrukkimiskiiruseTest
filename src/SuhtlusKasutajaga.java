@@ -20,7 +20,7 @@ public class SuhtlusKasutajaga {
 
         // Tsükkel, mis käib niikaua kuni kasutaja sisestab lubatud arvu sõnu
         while (!lubatudArvSõnu) {
-            System.out.println("Mitut sõna soovid trükkida? (5, 10, 30, 50) ");
+            System.out.println("Mitut sõna soovid trükkida? (5, 10, 25, 50) ");
 
             // Scanner loeb kasutajasisendist, mitut sõna kasutaja trükkima soovib hakata
             sõnadeArv = mituSõnaSoovib.nextInt();
