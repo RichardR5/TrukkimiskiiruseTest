@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class SuhtlusKasutajaga {
+public class TrukkimiskiiruseTest {
     /**
      * Küsib kasutajalt, mitme sõna pikkust testi kasutaja soovib.
      * Loeb kasutaja sisendit ning genereerib vastava sõnade arvuga listi.
