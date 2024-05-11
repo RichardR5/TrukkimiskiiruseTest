@@ -1,11 +1,10 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+package org.example.trukkimiskiirusetest2;
 
-public class SonadeGeneraator {
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+
+public class SõnadeGeneraator {
     /**
      * Genereerib vastava pikkusega testi valides suvalisi sõnu
      * @param sõnadeArv Määrab mitme sõnaga testi genereeritakse
@@ -40,23 +39,23 @@ public class SonadeGeneraator {
         List<String> sõnad = new ArrayList<>();
 
         // hakkab failist järjest ridu lugema
-        try (Scanner scanner = new Scanner(new File("kõigePopulaarsemadSõnad.txt"))) {
-            while (scanner.hasNextLine()) {
-                String rida = scanner.nextLine();
+        try (BufferedReader br = new BufferedReader(new FileReader("kõigePopulaarsemadSõnad.txt", StandardCharsets.UTF_8))) {
+            String rida;
+            while ((rida = br.readLine()) != null) {
 
                 // lõikab rea tükkideks ning leiab vajalikud muutujad "esinemisi" ja "sõna"
                 String[] lõigutudRida = rida.split(" ");
                 int esinemisi = Integer.parseInt(lõigutudRida[lõigutudRida.length - 2]);
                 String sõna = lõigutudRida[lõigutudRida.length - 1];
 
-                // sõna on sobilik kui ta ei sisalda sidekriipsu ning kui sõna "esinemisi" on rohkem kui 10
+                // sõna on sobilik kui ta ei sisalda sidekriipsu ning kui sõna "esinemisi" on rohkem kui 10 ning kui sõnas on üle kahe tähe
                 // väiksemate esinemistega sõnad on väga haruldased ja/või erilise kirjapildiga ning ei sobi meie programmi
-                if (!sõna.contains("-") && esinemisi > 10) {
+                if (!sõna.contains("-") && esinemisi > 10 && sõna.length() > 2) {
                     sõnad.add(sõna);
                 }
             }
         // kui tekib probleem faili leidmisega
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             System.out.println("Faili ei leitud!");
         }
         return sõnad;
