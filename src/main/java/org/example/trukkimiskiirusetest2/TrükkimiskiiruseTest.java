@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -78,7 +80,11 @@ public class TrükkimiskiiruseTest extends Peamenüü {
                     double trükikiirus = arvutaWPM(sisestuseLõpp, vigu);
                     // Kasutaja saab tagasiside
                     primaryStage.close();
-                    tagasiside(trükikiirus);
+                    try {
+                        tagasiside(trükikiirus);
+                    } catch (IOException viga) {
+                        System.out.println(viga.getMessage());
+                    }
                 } else {
                     // Ekraanile ilmub uus sõna ja sisestuse rida tühjendatakse
                     hetkeSõna.setText(sõnad.get(indeks.getAndIncrement()));
@@ -180,8 +186,37 @@ public class TrükkimiskiiruseTest extends Peamenüü {
         countdown(hetkeSõna, esimeneSõna, sõnadeSisestus);
     }
 
-    // SIIA TEE SIIS TAGASISIDE KASUTAJALE JA TULEMUSE FAILI KIRJUTAMINE, PERSONAL BEST'I LEIDMINE VMS
-    private void tagasiside(double trükikiirus) {
+    /**
+     * Meetodi eesmärk on andmefailist leida kasutaja parim tulemus
+     * @param trükikiirus tulemus, mille kasutaja just sai
+     * @return tagastab (sessiooni) parima tulemuse
+     */
+    private double tööFailiga(double trükikiirus) throws IOException {
+        // Lisab just saadud tulemuse faili
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream("andmed.bin", true))) {
+            dos.writeDouble(trükikiirus);
+        }
+
+        // Hakkab otsima parimat tulemust
+        double parimKiirus = Double.MIN_VALUE;
+        try (DataInputStream dis = new DataInputStream(new FileInputStream("andmed.bin"))) {
+            while (dis.available() > 0) {
+                double järgmineTulemus = dis.readDouble();
+                if (järgmineTulemus > parimKiirus) parimKiirus = järgmineTulemus;
+            }
+        } catch (IOException e) {
+            System.out.println("Faili, kust tulemusi lugeda, ei leitud!");
+        }
+
+        return parimKiirus;
+    }
+
+    /**
+     * Meetod kuvab kasutajale tema trükkimiskiirusetesti tagasiside
+     * @param trükikiirus kasutaja saavutatud trükkimiskiirus
+     */
+    private void tagasiside(double trükikiirus) throws IOException {
+        // Tagasiside sõltuvalt tulemusest (ja vigadest)
         String tagasisideTekst = tagasisideTekst(trükikiirus);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -199,10 +234,12 @@ public class TrükkimiskiiruseTest extends Peamenüü {
         alert.getButtonTypes().setAll(uusTest, lõpeta);
 
         // Kui vajutatakse "Uus test" siis avaneb peamenüü
-        // Kui vajutatakse "Lõpeta" siis programm lõpetab oma töö
+        // Kui vajutatakse "Lõpeta" siis programm lõpetab oma töö ja andmete fail kustutakse
         Optional<ButtonType> tulemus = alert.showAndWait();
         if (tulemus.isPresent() && tulemus.get() == uusTest) {
             new Peamenüü().start(new Stage());
+        } else {
+            new File("andmed.bin").delete();
         }
     }
 
@@ -211,8 +248,9 @@ public class TrükkimiskiiruseTest extends Peamenüü {
      * @param trükikiirus kasutaja trükikiirus
      * @return tagastab sobiva teksti
      */
-    private String tagasisideTekst(double trükikiirus) {
+    private String tagasisideTekst(double trükikiirus) throws IOException {
         if (trükikiirus == 0) return "Tegid liiga palju vigu! Sinu tulemus ei loe.";
-        return "Trükkimiskiirus: " + trükikiirus + " sõna minutis\nVigu: " + vigu;
+        return "Trükkimiskiirus: " + trükikiirus + " sõna minutis\nVigu: " + vigu +
+                "\nSinu senine parim tulemus on " + tööFailiga(trükikiirus) + " sõna minutis. ";
     }
 }
