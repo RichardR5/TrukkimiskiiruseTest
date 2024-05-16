@@ -171,7 +171,7 @@ public class TrükkimiskiiruseTest extends Peamenüü {
         alert.setTitle("Trükkimiskiiruse testi juhised");
         alert.setHeaderText(null);
         Label info1 = new Label("Trüki võimalikult kiiresti ekraanile ilmuvad sõnad.");
-        Label info2 = new Label("Kui sõna on kirjutatud siis vajuta ENTER, et liikuda järgmise sõna juurde.");
+        Label info2 = new Label("Kui sõna on kirjutatud, siis vajuta ENTER, et liikuda järgmise sõna juurde.");
         Label info3 = new Label("NB! Iga vea eest lisatakse aega juurde.\nÄra eksi rohkem kui poolte sõnadega, muidu tulemus ei loe!");
         info1.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 16));
         info2.setFont(Font.font("Arial", FontWeight.SEMI_BOLD, 16));
