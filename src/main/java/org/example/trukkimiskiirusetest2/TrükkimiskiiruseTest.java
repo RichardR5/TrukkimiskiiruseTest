@@ -188,7 +188,7 @@ public class TrükkimiskiiruseTest extends Peamenüü {
 
     /**
      * Meetodi eesmärk on andmefailist leida kasutaja parim tulemus
-     * @param trükikiirus tulemus, mille kasutaja just sai
+     * @param trükikiirus tulemus, mille kasutaja just saavutas
      * @return tagastab (sessiooni) parima tulemuse
      */
     private double tööFailiga(double trükikiirus) throws IOException {
